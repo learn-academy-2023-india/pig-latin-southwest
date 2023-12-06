@@ -35,6 +35,17 @@ const App = () => {
       let pigLatinWord = eachWord
       if (vowelsArray.length > 0 && vowelsArray[0].toLowerCase() === eachWord[0].toLowerCase()) {
         pigLatinWord = eachWord + "way"
+      } else {
+        const quIndex = eachWord.toLowerCase().indexOf("qu")
+        if (quIndex !== -1) {
+          pigLatinWord =
+            eachWord.slice(quIndex + 2) + eachWord.slice(0, quIndex + 2) + "ay"
+        } else {
+          const firstVowelIndex = vowelsArray.length > 0 ? eachWord.indexOf(vowelsArray[0]) : -1
+          if (firstVowelIndex > 0) {
+            pigLatinWord = eachWord.slice(firstVowelIndex) + eachWord.slice(0, firstVowelIndex) + "ay"
+          }
+        }
       }
 
       // ACTION ITEM: this return will be the output of your Pig Latin'd code
