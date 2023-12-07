@@ -4,15 +4,16 @@ import butcherPigImage from "./assets/butcherPig.jpeg"
 
 const App = () => {
   // ACTION ITEM: to make the development process easier there are some preassigned words in the input field, when you are ready for your full user experience delete the test words passed to useState and pass an empty string
-  const [userInput, setUserInput] = useState("")
+  const [userInput, setUserInput] = useState(
+    ""
+  )
   const [inputTranslated, setInputTranslated] = useState("")
 
   // ACTION ITEM: the "myPigLatinCodeHere" function is where you will put your logic to translate the sentence entered by the user into Pig Latin
   const myPigLatinCodeHere = () => {
-
     // NO MODIFICATION NEEDED: the variable "arrayOfUserInput" will contain the text input from the user split into an array of words
     const arrayOfUserInput = userInput.split(" ")
-    console.log("arrayOfUserInput:", arrayOfUserInput)
+    // console.log("arrayOfUserInput:", arrayOfUserInput)
 
     // NO MODIFICATION NEEDED: now that we have an array of words, we can map over the array and look at each word
     const translatedWordsArray = arrayOfUserInput.map((eachWord) => {
@@ -29,32 +30,31 @@ const App = () => {
         )
       })
       console.log("vowelsArray:", vowelsArray)
-
-      // ACTION ITEM: your Pig Latin logic goes here!
-
-      let pigLatinWord = eachWord
-      if (vowelsArray.length > 0 && vowelsArray[0].toLowerCase() === eachWord[0].toLowerCase()) {
-        pigLatinWord = eachWord + "way"
+      // creating a variable to hold the first vowel in the word, index 0 from the vowels array
+      const firstVowel = vowelsArray[0]
+      // creating a variable to hold the letter of the word before the first vowel
+      // conditional statement that handles all the pig latin-izing
+      if (eachWord.indexOf(firstVowel) === 0) {
+        return `${eachWord}way`
+      } else if (eachWord[eachWord.indexOf(firstVowel) - 1] === "q") {
+        const nextVowel = vowelsArray[1]
+        const indexOfNextVowel = eachWord.indexOf(nextVowel)
+        const firstPartOfWord = eachWord.slice(0, indexOfNextVowel)
+        const secondPartOfWord = eachWord.slice(indexOfNextVowel)
+        return `${secondPartOfWord}${firstPartOfWord}ay`
       } else {
-        const quIndex = eachWord.toLowerCase().indexOf("qu")
-        if (quIndex !== -1) {
-          pigLatinWord =
-            eachWord.slice(quIndex + 2) + eachWord.slice(0, quIndex + 2) + "ay"
-        } else {
-          const firstVowelIndex = vowelsArray.length > 0 ? eachWord.indexOf(vowelsArray[0]) : -1
-          if (firstVowelIndex > 0) {
-            pigLatinWord = eachWord.slice(firstVowelIndex) + eachWord.slice(0, firstVowelIndex) + "ay"
-          }
-        }
+        const indexOfFirstVowel = eachWord.indexOf(firstVowel)
+        const consonants = eachWord.slice(0, indexOfFirstVowel)
+        const restOfWord = eachWord.slice(indexOfFirstVowel)
+        return `${restOfWord}${consonants}ay`
       }
 
       // ACTION ITEM: this return will be the output of your Pig Latin'd code
-
-      return pigLatinWord
+      return eachWord
     })
 
     // NO MODIFICATION NEEDED: once the code has been modified it gets joined from an array back to a string
-    const translatedWords = translatedWordsArray.join(" ")
+    const translatedWords = translatedWordsArray.join("")
     console.log("translatedWords:", translatedWords)
 
     // NO MODIFICATION NEEDED: this will update the inputTranslated variable in state
@@ -108,4 +108,3 @@ const App = () => {
 }
 
 export default App
-
